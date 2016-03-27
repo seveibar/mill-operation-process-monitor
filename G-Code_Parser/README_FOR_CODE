@@ -1,0 +1,28 @@
+It is necessary to have GNUplot installed along with a compiler that supports C++11 and the Boost library.
+
+To compile the code, run something along the lines of 
+"g++ -std=c++11 G-Code_Parser.cpp -o main -lboost_iostreams -lboost_system -lboost_filesystem"
+
+Then, run the main executable file with the Gcode file in the same directory with the Gcode file name as a parameter.
+For example:
+"./main gcode.txt"
+
+After the executable file is run, you need to plot the Time vs X and Time vs Y positions with GNUplot.
+Run the following commands:
+
+gnuplot
+set term png
+set xlabel "Time (seconds)"
+set ylabel "Displacement from Origin"
+set autoscale
+set output "X-Waveform.png"
+plot "X-Wave.dat" using 1:2 title 'X-Position' with lines
+set output "Y-Waveform.png"
+plot "Y-Wave.dat" using 1:2 title 'Y-Position' with lines
+set output "X_Y-Waveform.png"
+plot "X-Wave.dat" using 1:2 title 'X-Position' with lines, \
+"Y-Wave.dat" using 1:2 title 'Y-Position' with lines
+quit
+
+This will output the waveforms in png files in the same directory as the code. 
+Future revision will autogenerate the png files in the code.
