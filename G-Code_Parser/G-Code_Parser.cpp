@@ -47,12 +47,8 @@ int main(int argc, char* argv[]){
 	
 	while(in_str >> curCommand){
 		if( curCommand == ";" ){	//Goes through the file to the next commandin the case of a comment
-			while( in_str >> curCommand ){
-				//THIS BREAKS IF YOU PUT IT IN THE WHILE STATEMENT AS THE != EQUIVALENT, IDK WHY!!!
-				//i.e. while(curCommand != "G01" || curCommand != "G4" || curCommand != "G04"){ in_str >> curCommand; }
-				if( curCommand == "G01" || curCommand == "G4" || curCommand == "G04" ){	
-					break;
-				}
+			while(curCommand != "G01" && curCommand != "G4" && curCommand != "G04"){ 
+				in_str >> curCommand; 
 			}
 		}
 		movementGCode( in_str, curCommand, xPos, yPos, zPos, XYZ, timeXYZRecord, feedRate, time );
