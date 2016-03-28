@@ -7,22 +7,4 @@ Then, run the main executable file with the Gcode file in the same directory wit
 For example:
 "./main gcode.txt"
 
-After the executable file is run, you need to plot the Time vs X and Time vs Y positions with GNUplot.
-Run the following commands:
-
-gnuplot
-set term png
-set xlabel "Time (seconds)"
-set ylabel "Displacement from Origin"
-set autoscale
-set output "X-Waveform.png"
-plot "X-Wave.dat" using 1:2 title 'X-Position' with lines
-set output "Y-Waveform.png"
-plot "Y-Wave.dat" using 1:2 title 'Y-Position' with lines
-set output "X_Y-Waveform.png"
-plot "X-Wave.dat" using 1:2 title 'X-Position' with lines, \
-"Y-Wave.dat" using 1:2 title 'Y-Position' with lines
-quit
-
-This will output the waveforms in png files in the same directory as the code. 
-Future revision will autogenerate the png files in the code.
+This will autogenerate three graphs: X-Position vs Time, Y-Position vs Time, X&Y-Position vs Time. The autogeneration utilizes GNUplot and will save the graphs as png files in the same directory as the executable. The graphs are set to be autoscaled, so some adjustment of the code/gnuplot may be necessary.
