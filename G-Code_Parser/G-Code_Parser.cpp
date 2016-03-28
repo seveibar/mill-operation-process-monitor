@@ -7,9 +7,9 @@
 #include <map>
 #include <vector>
 #include <string>
-/*#include <utility>
+#include <utility>
 #include "gnuplot-iostream.h"
-*/
+
 
 //Function Prototypes
 void initialization( std::ifstream& in_str, std::string& curCommand, double& xPos, double& yPos, double& zPos,
@@ -49,7 +49,7 @@ int main(int argc, char* argv[]){
 		if( curCommand == ";" ){	//Goes through the file to the next commandin the case of a comment
 			while( in_str >> curCommand ){
 				//THIS BREAKS IF YOU PUT IT IN THE WHILE STATEMENT AS THE != EQUIVALENT, IDK WHY!!!
-				//i.e. while(curCommand != "G01" || curCommand != "G4" || curCommand != "G04")
+				//i.e. while(curCommand != "G01" || curCommand != "G4" || curCommand != "G04"){ in_str >> curCommand; }
 				if( curCommand == "G01" || curCommand == "G4" || curCommand == "G04" ){	
 					break;
 				}
@@ -157,7 +157,7 @@ void movementGCode( std::ifstream& in_str, std::string& curCommand, double& xPos
 
 void output( std::map< double, std::vector<double> >const& timeXYZRecord, double const& feedRate, std::string const& measurementUnits ){
 	//Opens stuff for output for GNUplot
-	//Gnuplot gp;
+	Gnuplot gp;
 	std::ofstream xWave("X-Wave.dat");
 	std::ofstream yWave("Y-Wave.dat");
 	
@@ -182,4 +182,17 @@ void output( std::map< double, std::vector<double> >const& timeXYZRecord, double
 	
 	xWave.close();
 	yWave.close();
+	
+	gp 	<< "set term png\n" 
+		<< "set xlabel 'Time (seconds)'\n"
+		<< "set ylabel 'Displacement from Origin'\n"
+		<< "set autoscale\n"
+		<< "set output \"X-Waveform.png\"\n"
+		<< "plot \"X-Wave.dat\" using 1:2 title 'X-Position' with lines\n"
+		<< "set output \"Y-Waveform.png\"\n"
+		<< "plot \"Y-Wave.dat\" using 1:2 title 'Y-Position' with lines\n"
+		<< "set output \"X_Y-Waveform.png\"\n"
+		<< "plot \"X-Wave.dat\" using 1:2 title 'X-Position' with lines, \\\n"
+		<< "\"Y-Wave.dat\" using 1:2 title 'Y-Position' with lines\n";
+
 }
