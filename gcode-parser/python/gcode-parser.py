@@ -7,14 +7,14 @@ def initialization( curCommandInt, time, xPos, yPos, zPos ):
 	#Finds the initial xyz coordinates
 	curCommandInt = 1
 	for i in range(1,3):
-		curCommandInt += 1 
+		curCommandInt += 1
 		if( (commandList[curCommandInt])[0] == 'X' ):
 			xPos = float( (commandList[curCommandInt])[1:] )
 		elif( (commandList[curCommandInt])[0] == 'Y' ):
 			yPos = float( (commandList[curCommandInt])[1:] )
 		else:
 			zPos = float( (commandList[curCommandInt])[1:] )
-	
+
 	#Stores the initial xyz coordinates into a list
 	XYZ.append( xPos )
 	XYZ.append( yPos )
@@ -59,7 +59,7 @@ def movementGCode( curCommandInt, time, xPos, yPos, zPos, feedRate ):
 		#Calculates the time taken to make the movement
 		time += totalDistance / feedRate		#Time of movement = distance/feed rate
 		timeXYZRecord[time] = XYZ		#Inserting in the recent movement
-		
+
 		#Pause G-Code
 	elif(  commandList[curCommandInt] == "G4" or commandList[curCommandInt] == "G04" ):
 		curCommandInt+=1
@@ -84,8 +84,14 @@ timeXYZRecord = dict() #Used for holding the xyz values at time t
 feedRate = 0.0
 measurementUnits = ''
 
+if len(argv) != 2 and len(argv) != 3 :
+	print("USAGE: gcode-parser.py <input gcode> [output_file.json]")
+	sys.exit(1)
+
 #Used for opening the file passed in as an argument
-script, filename = argv 
+script, filename = argv[:2]
+
+output_file = len(argv) == 3 and argv[2] or None
 
 #Stores all the commands and stuff into a list.......very inefficient
 with open(filename,'r') as f:
@@ -118,16 +124,29 @@ for key in sorted(timeXYZRecord.iterkeys()):
 	xValueList.append( timeXYZRecord[key][0] )
 	yValueList.append( timeXYZRecord[key][1] )
 
-#Plotting the data
-plt.figure(1)
-plt.subplot(211)
-plt.plot( timeList, xValueList )
-plt.ylabel('Distance from Origin' )
-plt.xlabel('Time' )
-plt.title('X-Waveform')
-plt.subplot(212)
-plt.plot( timeList, yValueList )
-plt.ylabel('Distance from Origin')
-plt.xlabel('Time' )
-plt.title('Y-Waveform')
-plt.show()
+if not output_file:
+	#Plotting the data
+	plt.figure(1)
+	plt.subplot(211)
+	plt.plot( timeList, xValueList )
+	plt.ylabel('Distance from Origin' )
+	plt.xlabel('Time' )
+	plt.title('X-Waveform')
+	plt.subplot(212)
+	plt.plot( timeList, yValueList )
+	plt.ylabel('Distance from Origin')
+	plt.xlabel('Time' )
+	plt.title('Y-Waveform')
+	plt.show()
+else:
+	import json
+	positions = []
+	for t,x,y in zip(timeList, xValueList, yValueList):
+		positions.append({
+			"time": t,
+			"x": x,
+			"y": y
+		})
+	json.dump({
+		'positions': sorted(positions, key=lambda x: x['time'])
+	}, open(output_file, 'w'))
