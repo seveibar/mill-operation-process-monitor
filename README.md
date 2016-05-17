@@ -9,9 +9,9 @@ using inexpensive sensor peripherals.
 
 /gcode_parser/ contains code for extrapolating basic movements from G-Code commands and can graph out the XYZ position of the 3-axis vertical mill. The code exists in both C++ and Python with some sample G-Code to test it with.
 
-/notebooks/ contains 2 iPython notebooks that includes sections for running computer vision techniques on a parsed video stream to analyze throughput using [SIFT](https://github.com/seveibar/mill-operation-process-monitor/blob/master/notebooks/SIFT%20Feature%20Detection.ipynb) and [SURF](https://github.com/seveibar/mill-operation-process-monitor/blob/master/notebooks/Computer%20Vision%20Library%20Definitions.ipynb).
+/notebooks/ contains 2 iPython notebooks that includes sections for running computer vision techniques on a parsed video stream to analyze throughput using [SIFT](https://github.com/seveibar/mill-operation-process-monitor/blob/master/notebooks/SIFT%20Feature%20Detection.ipynb) and [SURF](https://github.com/seveibar/mill-operation-process-monitor/blob/master/notebooks/Computer%20Vision%20Library%20Definitions.ipynb). The work that was done in Spring 2016 at RPI can be found here.
 
-The lib.py library contains several functions made for analyzing a parsed video. 
+The [lib.py](https://github.com/seveibar/auto-feature-follow/blob/master/lib.py) library that was created and utilized for this project contains several functions for analyzing a parsed video. 
 
 The getSharedKeypoints function compares 2 images and detects common points in the pictures to be used in SURF. The function also takes in a sensitivity value, which is set to 0.5 by default.
 
