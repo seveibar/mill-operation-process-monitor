@@ -3,7 +3,7 @@
 This repo contains research and code that allow for realtime process analysis
 using inexpensive sensor peripherals.
 
-/data/ contains sample code that was run and the data that was obtained from it.
+/data/ contains sample code that was run and the data that was obtained from it as well as the schema for the [HAAS-VF1](https://github.com/seveibar/mill-operation-process-monitor/blob/master/data/Mill.xml).
 /data/xcarve/test1/ contains a video of a sample run and a script for generating spliced images from it for running computer vision techniques on.
 /data/VF1/ contains 2 sample G-Code files: O12345.NC and testProgram1.txt. The WithFeature.csv and WithoutFeature.csv files correspond to the testProgram1 G-Code and shows the acceleration and velocity data. The ComplicatedMachining.csv shows the acceleration and velocity data for the O12345.NC G-Code.
 
